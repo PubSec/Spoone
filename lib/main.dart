@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: null,
+        primaryColor: const Color.fromARGB(255, 88, 20, 247),
+        fontFamily: 'Nunito',
         package: 'android',
         brightness: Brightness.dark,
         useMaterial3: true,
