@@ -58,8 +58,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - asset/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -74,10 +74,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: Nunito
-       fonts:
-         - asset: fonts/static/Nunito-Regular.ttf
-         - asset: fonts/static/Nunito-Italic.ttf
+    - family: Nunito
+      fonts:
+        - asset: asset/fonts/static/Nunito-Regular.ttf
+        - asset: asset/fonts/static/Nunito-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
