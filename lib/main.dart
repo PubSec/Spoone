@@ -12,10 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 88, 20, 247),
         fontFamily: 'Nunito',
-        package: 'android',
+        platform: TargetPlatform.android,
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
