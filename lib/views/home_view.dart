@@ -9,10 +9,109 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-Future<http.Response> sendData() {
+// Future<http.Response> sendData(String url, String alias, String password,
+//     String maxClicks, bool blockBots) {
+//   if (blockBots == true) {
+//     if (alias.isEmpty) {
+//       if (url.contains("https://")) {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {"url": url},
+//           headers: {"Accept": "application/json"},
+//         );
+//       } else {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": "https://$url",
+//             "password": password,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       }
+//     } else {
+//       if (url.contains("https://")) {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": url,
+//             "alias": alias,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       } else {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": "https://$url",
+//             "alias": alias,
+//             "password": password,
+//             "block-bots": blockBots,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       }
+//     }
+//   } else {
+//     if (alias.isEmpty) {
+//       if (url.contains("https://")) {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {"url": url},
+//           headers: {"Accept": "application/json"},
+//         );
+//       } else {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": "https://$url",
+//             "password": password,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       }
+//     } else {
+//       if (url.contains("https://")) {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": url,
+//             "alias": alias,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       } else {
+//         return http.post(
+//           Uri.parse(baseUrl),
+//           body: {
+//             "url": "https://$url",
+//             "alias": alias,
+//             "password": password,
+//           },
+//           headers: {"Accept": "application/json"},
+//         );
+//       }
+//     }
+//   }
+// }
+
+Future<http.Response> sendData(String url, String alias, String password,
+    String maxClicks, String blockBots) {
+  late int? maxClintInt;
+  try {
+    maxClintInt = int.tryParse(maxClicks);
+  } catch (e) {
+    debugPrint("${e}");
+  }
   return http.post(
     Uri.parse(baseUrl),
-    body: {"url": "https://youtube.com"},
+    body: {
+      "url": url,
+      "alias": alias,
+      "password": password,
+      "max-clicks": int.tryParse(maxClicks),
+      "block-bots": blockBots,
+    },
     headers: {"Accept": "application/json"},
   );
 }
@@ -22,6 +121,12 @@ class _HomeViewState extends State<HomeView> {
   bool value = false;
   final TextEditingController _urlTextEditingController =
       TextEditingController();
+  final TextEditingController _aliasTextEditingController =
+      TextEditingController();
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController();
+  final TextEditingController _clicksTextEditingController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,57 +135,100 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.transparent,
         title: Text('Spoone'),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(240, 9, 12, 61),
-              Color.fromARGB(151, 138, 145, 236),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(240, 9, 12, 61),
+                Color.fromARGB(151, 138, 145, 236),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              maxLines: 1,
-              controller: _urlTextEditingController,
-              decoration: InputDecoration(
-                label: Text('URL'),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
+          child: Column(
+            spacing: 18,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                maxLines: 1,
+                controller: _urlTextEditingController,
+                decoration: InputDecoration(
+                  label: Text('URL'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            Center(
-              child: Text(placeHolder),
-            ),
-            CheckboxListTile(
-              title: Text('Block bots'),
-              controlAffinity: ListTileControlAffinity.leading,
-              value: value,
-              onChanged: (newValue) {
-                debugPrint("$newValue");
-                setState(
-                  () {
-                    value = newValue!;
-                  },
-                );
-              },
-            ),
-            FilledButton.tonal(
-              onPressed: () async {
-                final data = await sendData();
-                setState(() {
-                  placeHolder = data.body;
-                });
-              },
-              child: Text('Shorten'),
-            ),
-          ],
+              TextField(
+                maxLines: 1,
+                controller: _aliasTextEditingController,
+                decoration: InputDecoration(
+                  label: Text('Alias (Optional)'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              TextField(
+                maxLines: 1,
+                controller: _passwordTextEditingController,
+                decoration: InputDecoration(
+                  label: Text('Password (Optional)'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              TextField(
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+                controller: _clicksTextEditingController,
+                decoration: InputDecoration(
+                  label: Text('Max Clicks (Optional)'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(placeHolder),
+              ),
+              CheckboxListTile(
+                title: Text('Block bots'),
+                controlAffinity: ListTileControlAffinity.leading,
+                value: value,
+                onChanged: (newValue) {
+                  debugPrint("$newValue");
+                  setState(
+                    () {
+                      value = newValue!;
+                    },
+                  );
+                },
+              ),
+              FilledButton(
+                onPressed: () async {
+                  final data = await sendData(
+                    _urlTextEditingController.text,
+                    _aliasTextEditingController.text,
+                    _passwordTextEditingController.text,
+                    _clicksTextEditingController.text,
+                    value.toString(),
+                  );
+                  setState(() {
+                    placeHolder = data.body;
+                  });
+                },
+                child: Text('Shorten'),
+              ),
+            ],
+          ),
         ),
       ),
     );
