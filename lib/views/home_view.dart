@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:spoone/core/data.dart';
+import 'package:spoone/widgets/results_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -9,118 +10,40 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-// Future<http.Response> sendData(String url, String alias, String password,
-//     String maxClicks, bool blockBots) {
-//   if (blockBots == true) {
-//     if (alias.isEmpty) {
-//       if (url.contains("https://")) {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {"url": url},
-//           headers: {"Accept": "application/json"},
-//         );
-//       } else {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": "https://$url",
-//             "password": password,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       }
-//     } else {
-//       if (url.contains("https://")) {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": url,
-//             "alias": alias,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       } else {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": "https://$url",
-//             "alias": alias,
-//             "password": password,
-//             "block-bots": blockBots,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       }
-//     }
-//   } else {
-//     if (alias.isEmpty) {
-//       if (url.contains("https://")) {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {"url": url},
-//           headers: {"Accept": "application/json"},
-//         );
-//       } else {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": "https://$url",
-//             "password": password,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       }
-//     } else {
-//       if (url.contains("https://")) {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": url,
-//             "alias": alias,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       } else {
-//         return http.post(
-//           Uri.parse(baseUrl),
-//           body: {
-//             "url": "https://$url",
-//             "alias": alias,
-//             "password": password,
-//           },
-//           headers: {"Accept": "application/json"},
-//         );
-//       }
-//     }
-//   }
-// }
-
 Future<http.Response> sendData(String url, String alias, String password,
-    String maxClicks, String blockBots) {
-  late int? maxClintInt;
-  try {
-    maxClintInt = int.tryParse(maxClicks);
-  } catch (e) {
-    debugPrint("${e}");
+    dynamic maxClicks, bool blockBots) {
+  if (blockBots) {
+    return http.post(
+      Uri.parse(baseUrl),
+      body: {
+        "url": url,
+        "alias": alias,
+        "password": password,
+        "max-clicks": maxClicks,
+        "block-bots": "True",
+      },
+      headers: headers,
+    );
+  } else {
+    return http.post(
+      Uri.parse(baseUrl),
+      body: {
+        "url": url,
+        "alias": alias,
+        "password": password,
+        "max-clicks": maxClicks,
+        // "block-bots": blockBots,
+      },
+      headers: headers,
+    );
   }
-  return http.post(
-    Uri.parse(baseUrl),
-    body: {
-      "url": url,
-      "alias": alias,
-      "password": password,
-      "max-clicks": int.tryParse(maxClicks),
-      "block-bots": blockBots,
-    },
-    headers: {"Accept": "application/json"},
-  );
 }
 
 class _HomeViewState extends State<HomeView> {
   String placeHolder = '';
   bool value = false;
   final TextEditingController _urlTextEditingController =
-      TextEditingController();
+      TextEditingController(text: 'https://');
   final TextEditingController _aliasTextEditingController =
       TextEditingController();
   final TextEditingController _passwordTextEditingController =
@@ -204,7 +127,6 @@ class _HomeViewState extends State<HomeView> {
                 controlAffinity: ListTileControlAffinity.leading,
                 value: value,
                 onChanged: (newValue) {
-                  debugPrint("$newValue");
                   setState(
                     () {
                       value = newValue!;
@@ -214,16 +136,22 @@ class _HomeViewState extends State<HomeView> {
               ),
               FilledButton(
                 onPressed: () async {
-                  final data = await sendData(
-                    _urlTextEditingController.text,
-                    _aliasTextEditingController.text,
-                    _passwordTextEditingController.text,
-                    _clicksTextEditingController.text,
-                    value.toString(),
-                  );
-                  setState(() {
-                    placeHolder = data.body;
-                  });
+                  resultWidget(context);
+                  try {
+                    final data = await sendData(
+                      _urlTextEditingController.text,
+                      _aliasTextEditingController.text,
+                      _passwordTextEditingController.text,
+                      _clicksTextEditingController.text,
+                      value,
+                    );
+                    setState(() {
+                      placeHolder = data.body;
+                    });
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("$e")));
+                  }
                 },
                 child: Text('Shorten'),
               ),
