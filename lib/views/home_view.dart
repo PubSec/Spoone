@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:spoone/core/data.dart';
+import 'package:spoone/model/short_link_model.dart';
 import 'package:spoone/widgets/results_widget.dart';
 
 class HomeView extends StatefulWidget {
@@ -136,7 +137,6 @@ class _HomeViewState extends State<HomeView> {
               ),
               FilledButton(
                 onPressed: () async {
-                  resultWidget(context);
                   try {
                     final data = await sendData(
                       _urlTextEditingController.text,
@@ -148,6 +148,8 @@ class _HomeViewState extends State<HomeView> {
                     setState(() {
                       placeHolder = data.body;
                     });
+                    final linkModel = ShortLinkModel(url: data);
+                    resultWidget(context, linkModel);
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text("$e")));
