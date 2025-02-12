@@ -8,6 +8,7 @@ class ShortLinkModel {
   ShortLinkModel({required this.url});
 
   String getAlias() {
+    // shortUrl = url.body.
     int idx = this.url.body.lastIndexOf('/');
     String alias = this.url.body.substring(idx);
     return alias;
