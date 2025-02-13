@@ -1,47 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:spoone/core/data.dart';
-import 'package:spoone/model/short_link_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spoone/providers/short_link_result_provider.dart';
 import 'package:spoone/widgets/results_widget.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-Future<http.Response> sendData(String url, String alias, String password,
-    dynamic maxClicks, bool blockBots) {
-  if (blockBots) {
-    return http.post(
-      Uri.parse(baseUrl),
-      body: {
-        "url": url,
-        "alias": alias,
-        "password": password,
-        "max-clicks": maxClicks,
-        "block-bots": "True",
-      },
-      headers: headers,
-    );
-  } else {
-    return http.post(
-      Uri.parse(baseUrl),
-      body: {
-        "url": url,
-        "alias": alias,
-        "password": password,
-        "max-clicks": maxClicks,
-        // "block-bots": blockBots,
-      },
-      headers: headers,
-    );
-  }
-}
+// Future<http.Response> sendData(String url, String alias, String password,
+//     dynamic maxClicks, bool blockBots) {
+//   if (blockBots) {
+//     return http.post(
+//       Uri.parse(baseUrl),
+//       body: {
+//         "url": url,
+//         "alias": alias,
+//         "password": password,
+//         "max-clicks": maxClicks,
+//         "block-bots": "True",
+//       },
+//       headers: headers,
+//     );
+//   } else {
+//     return http.post(
+//       Uri.parse(baseUrl),
+//       body: {
+//         "url": url,
+//         "alias": alias,
+//         "password": password,
+//         "max-clicks": maxClicks,
+//         // "block-bots": blockBots,
+//       },
+//       headers: headers,
+//     );
+//   }
+// }
 
-class _HomeViewState extends State<HomeView> {
-  String placeHolder = '';
+class _HomeViewState extends ConsumerState<HomeView> {
   bool value = false;
   final TextEditingController _urlTextEditingController =
       TextEditingController(text: 'https://');
@@ -53,6 +51,8 @@ class _HomeViewState extends State<HomeView> {
       TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final sendNotifier = ref.watch(ShortLinkNorifierProvider.notifier).getLink;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -120,9 +120,6 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
-              Center(
-                child: Text(placeHolder),
-              ),
               CheckboxListTile(
                 title: Text('Block bots'),
                 controlAffinity: ListTileControlAffinity.leading,
@@ -138,18 +135,21 @@ class _HomeViewState extends State<HomeView> {
               FilledButton(
                 onPressed: () async {
                   try {
-                    final data = await sendData(
-                      _urlTextEditingController.text,
-                      _aliasTextEditingController.text,
-                      _passwordTextEditingController.text,
-                      _clicksTextEditingController.text,
-                      value,
+                    // final data = await sendData(
+                    //   _urlTextEditingController.text,
+                    //   _aliasTextEditingController.text,
+                    //   _passwordTextEditingController.text,
+                    //   _clicksTextEditingController.text,
+                    //   value,
+                    // );
+                    final data = sendNotifier(
+                      url: _urlTextEditingController.text,
+                      alias: _aliasTextEditingController.text,
+                      password: _passwordTextEditingController.text,
+                      maxClicks: _clicksTextEditingController.text,
+                      blockBots: value,
                     );
-                    setState(() {
-                      placeHolder = data.body;
-                    });
-                    final linkModel = ShortLinkModel(url: data);
-                    resultWidget(context, linkModel);
+                    resultWidget(context, data);
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text("$e")));

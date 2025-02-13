@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:spoone/model/short_link_model.dart';
 
-Future<Widget> resultWidget(BuildContext context, ShortLinkModel shortLink) {
+Future<void> resultWidget(BuildContext context, Future data) {
   return showModalBottomSheet(
     context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(25.0),
-      ),
-    ),
-    builder: (context) {
-      return Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Text(
-              shortLink.getAlias(),
-            ),
-          ),
-          shortLink.getQRCode()
-        ],
+    builder: (BuildContext context) {
+      return FutureBuilder(
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              // Assuming the data is a widget or can be converted to a widget
+              return Center(child: Text('Data: ${snapshot.data}'));
+            }
+          }
+          return Center(child: Text('No data available'));
+        },
       );
     },
-  ).then((value) => value ?? Text('ds'));
+  );
 }
