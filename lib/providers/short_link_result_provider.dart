@@ -42,7 +42,6 @@ class ShortLinkNorifier extends Notifier<Future<ShortLinkModel>> {
           "alias": alias,
           "password": password,
           "max-clicks": maxClicks,
-          // "block-bots": "True",
         },
       );
       return ShortLinkModel.fromJson(jsonDecode(response.body));
@@ -50,7 +49,7 @@ class ShortLinkNorifier extends Notifier<Future<ShortLinkModel>> {
   }
 }
 
-final ShortLinkNorifierProvider =
+final shortLinkNorifierProvider =
     NotifierProvider<ShortLinkNorifier, Future<ShortLinkModel>>(() {
   return ShortLinkNorifier();
 });

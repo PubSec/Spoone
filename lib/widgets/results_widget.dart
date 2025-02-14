@@ -11,10 +11,25 @@ Future<void> resultWidget(BuildContext context, Future data) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
+              Center(child: Text('Error: ${snapshot.error}'));
+              Future.delayed(Duration(seconds: 20));
+              return Text("${snapshot.error}");
             } else if (snapshot.hasData) {
-              // Assuming the data is a widget or can be converted to a widget
-              return Center(child: Text('Data: ${snapshot.data}'));
+              debugPrint(snapshot.data);
+              // int idx = snapshot.data.toString().lastIndexOf("/");
+              // String alias = snapshot.data.toString().substring(idx + 1);
+              return Column(
+                children: [
+                  Center(
+                    child: Text(
+                      'URL: ${snapshot.data}',
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                ],
+              );
             }
           }
           return Center(child: Text('No data available'));

@@ -23,14 +23,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'short_link_model.freezed.dart';
 part 'short_link_model.g.dart';
 
-/// The response of the `GET /api/activity` endpoint.
+/// The response of the `POST /` endpoint.
 ///
 /// It is defined using `freezed` and `json_serializable`.
 @freezed
 class ShortLinkModel with _$ShortLinkModel {
-  const factory ShortLinkModel({
-    required String short_url,
-  }) = _ShortLinkModel;
+  const factory ShortLinkModel(
+    String short_url,
+  ) = _ShortLinkModel;
 
   /// Convert a JSON object into an [ShortLinkModel Instance] instance.
   /// This enables type-safe reading of the API response.

@@ -10,35 +10,6 @@ class HomeView extends ConsumerStatefulWidget {
   ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-// Future<http.Response> sendData(String url, String alias, String password,
-//     dynamic maxClicks, bool blockBots) {
-//   if (blockBots) {
-//     return http.post(
-//       Uri.parse(baseUrl),
-//       body: {
-//         "url": url,
-//         "alias": alias,
-//         "password": password,
-//         "max-clicks": maxClicks,
-//         "block-bots": "True",
-//       },
-//       headers: headers,
-//     );
-//   } else {
-//     return http.post(
-//       Uri.parse(baseUrl),
-//       body: {
-//         "url": url,
-//         "alias": alias,
-//         "password": password,
-//         "max-clicks": maxClicks,
-//         // "block-bots": blockBots,
-//       },
-//       headers: headers,
-//     );
-//   }
-// }
-
 class _HomeViewState extends ConsumerState<HomeView> {
   bool value = false;
   final TextEditingController _urlTextEditingController =
@@ -51,7 +22,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final sendNotifier = ref.watch(ShortLinkNorifierProvider.notifier).getLink;
+    final sendNotifier = ref.watch(shortLinkNorifierProvider.notifier).getLink;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -120,40 +91,38 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 ),
               ),
-              CheckboxListTile(
-                title: Text('Block bots'),
-                controlAffinity: ListTileControlAffinity.leading,
-                value: value,
-                onChanged: (newValue) {
-                  setState(
-                    () {
-                      value = newValue!;
-                    },
-                  );
-                },
+              Text.rich(
+                TextSpan(children: [
+                  WidgetSpan(
+                      child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text("Block Bots"),
+                  )),
+                  WidgetSpan(
+                    child: Switch(
+                      value: value,
+                      onChanged: (newValue) {
+                        setState(
+                          () {
+                            value = newValue;
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ]),
               ),
               FilledButton(
-                onPressed: () async {
-                  try {
-                    // final data = await sendData(
-                    //   _urlTextEditingController.text,
-                    //   _aliasTextEditingController.text,
-                    //   _passwordTextEditingController.text,
-                    //   _clicksTextEditingController.text,
-                    //   value,
-                    // );
-                    final data = sendNotifier(
-                      url: _urlTextEditingController.text,
-                      alias: _aliasTextEditingController.text,
-                      password: _passwordTextEditingController.text,
-                      maxClicks: _clicksTextEditingController.text,
-                      blockBots: value,
-                    );
-                    resultWidget(context, data);
-                  } catch (e) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text("$e")));
-                  }
+                onPressed: () {
+                  final data = sendNotifier(
+                    url: _urlTextEditingController.text,
+                    alias: _aliasTextEditingController.text,
+                    password: _passwordTextEditingController.text,
+                    maxClicks: _clicksTextEditingController.text,
+                    blockBots: value,
+                  );
+                  // debugPrint(Future(data));
+                  resultWidget(context, data);
                 },
                 child: Text('Shorten'),
               ),
