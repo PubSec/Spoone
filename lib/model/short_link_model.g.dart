@@ -8,7 +8,7 @@ part of 'short_link_model.dart';
 
 _$ShortLinkModelImpl _$$ShortLinkModelImplFromJson(Map<String, dynamic> json) =>
     _$ShortLinkModelImpl(
-      json['short_url'] as String,
+      short_url: json['short_url'] as String,
     );
 
 Map<String, dynamic> _$$ShortLinkModelImplToJson(

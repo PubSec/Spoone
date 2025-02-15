@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spoone/providers/short_link_result_provider.dart';
+import 'package:spoone/widgets/help_widget.dart';
 import 'package:spoone/widgets/results_widget.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -29,6 +30,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('Spoone'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              helpWigdet(context);
+            },
+            icon: Icon(Icons.info),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -51,6 +60,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
+                autofocus: false,
                 maxLines: 1,
                 controller: _urlTextEditingController,
                 decoration: InputDecoration(
@@ -114,15 +124,25 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
               FilledButton(
                 onPressed: () {
-                  final data = sendNotifier(
-                    url: _urlTextEditingController.text,
-                    alias: _aliasTextEditingController.text,
-                    password: _passwordTextEditingController.text,
-                    maxClicks: _clicksTextEditingController.text,
-                    blockBots: value,
-                  );
-                  // debugPrint(Future(data));
-                  resultWidget(context, data);
+                  if (_urlTextEditingController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('URL can\'t be empty'),
+                        action: SnackBarAction(
+                            label: "Help",
+                            onPressed: () => helpWigdet(context)),
+                      ),
+                    );
+                  } else {
+                    final data = sendNotifier(
+                      url: _urlTextEditingController.text,
+                      alias: _aliasTextEditingController.text,
+                      password: _passwordTextEditingController.text,
+                      maxClicks: _clicksTextEditingController.text,
+                      blockBots: value,
+                    );
+                    resultWidget(context, data);
+                  }
                 },
                 child: Text('Shorten'),
               ),

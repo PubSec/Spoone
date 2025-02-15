@@ -20,6 +20,7 @@ ShortLinkModel _$ShortLinkModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ShortLinkModel {
+// ignore: non_constant_identifier_names
   String get short_url => throw _privateConstructorUsedError;
 
   /// Serializes this ShortLinkModel to a JSON map.
@@ -94,7 +95,7 @@ class __$$ShortLinkModelImplCopyWithImpl<$Res>
     Object? short_url = null,
   }) {
     return _then(_$ShortLinkModelImpl(
-      null == short_url
+      short_url: null == short_url
           ? _value.short_url
           : short_url // ignore: cast_nullable_to_non_nullable
               as String,
@@ -105,11 +106,12 @@ class __$$ShortLinkModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ShortLinkModelImpl implements _ShortLinkModel {
-  const _$ShortLinkModelImpl(this.short_url);
+  const _$ShortLinkModelImpl({required this.short_url});
 
   factory _$ShortLinkModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShortLinkModelImplFromJson(json);
 
+// ignore: non_constant_identifier_names
   @override
   final String short_url;
 
@@ -149,11 +151,13 @@ class _$ShortLinkModelImpl implements _ShortLinkModel {
 }
 
 abstract class _ShortLinkModel implements ShortLinkModel {
-  const factory _ShortLinkModel(final String short_url) = _$ShortLinkModelImpl;
+  const factory _ShortLinkModel({required final String short_url}) =
+      _$ShortLinkModelImpl;
 
   factory _ShortLinkModel.fromJson(Map<String, dynamic> json) =
       _$ShortLinkModelImpl.fromJson;
 
+// ignore: non_constant_identifier_names
   @override
   String get short_url;
 
