@@ -7,8 +7,7 @@ Future<void> resultWidget(
     BuildContext context, Future<ShortLinkModel> sentRequest) {
   return showModalBottomSheet(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20)), // Rounded top corners
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     isScrollControlled: true,
     showDragHandle: true,
@@ -46,7 +45,7 @@ Future<void> resultWidget(
                       data: snapshot.data!.short_url,
                       decoration: const PrettyQrDecoration(
                         shape: PrettyQrRoundedSymbol(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
                         ),
                         background: Colors.white,
                         image: PrettyQrDecorationImage(
