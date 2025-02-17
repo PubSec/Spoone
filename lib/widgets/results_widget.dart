@@ -158,6 +158,6 @@ Future _downloadQRCode(String fileName, BuildContext context) async {
         .showSnackBar(SnackBar(content: Text("Qr code saved")));
   } catch (e) {
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Failed to save qr code")));
+        .showSnackBar(SnackBar(content: Text("Failed to save qr code: ${e}")));
   }
 }
