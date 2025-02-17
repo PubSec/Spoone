@@ -4,9 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:spoone/core/data.dart';
 import 'package:spoone/model/short_link_model.dart';
 
-// Necessary for code-generation to work
-// part 'short_link_result_provider.g.dart';
-
 @riverpod
 class ShortLinkNorifier extends Notifier<Future<ShortLinkModel>> {
   @override
