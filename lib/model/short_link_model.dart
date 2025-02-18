@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'short_link_model.freezed.dart';
@@ -9,7 +11,6 @@ part 'short_link_model.g.dart';
 @freezed
 class ShortLinkModel with _$ShortLinkModel {
   const factory ShortLinkModel(
-    // ignore: non_constant_identifier_names
     String? short_url,
     String? UrlError,
     String? AliasError,

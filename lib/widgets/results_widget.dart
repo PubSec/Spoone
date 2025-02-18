@@ -1,10 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:spoone/core/data.dart';
 import 'package:spoone/model/short_link_model.dart';
 import 'package:spoone/widgets/help_widget.dart';
@@ -106,9 +107,9 @@ Future<void> resultWidget(
                           ),
                           IconButton(
                             onPressed: () async {
-                              await Share.share(url);
+                              await Clipboard.setData(ClipboardData(text: url));
                             },
-                            icon: Icon(Icons.share),
+                            icon: Icon(Icons.copy),
                           )
                         ],
                       ),
@@ -158,6 +159,6 @@ Future _downloadQRCode(String fileName, BuildContext context) async {
         .showSnackBar(SnackBar(content: Text("Qr code saved")));
   } catch (e) {
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Failed to save qr code: ${e}")));
+        .showSnackBar(SnackBar(content: Text("Failed to save qr code")));
   }
 }
