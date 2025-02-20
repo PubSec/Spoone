@@ -1,11 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spoone/model/link_stats/link_stats_model.dart';
 import 'package:spoone/providers/link_stats_result_provider.dart';
-import 'package:spoone/widgets/frost_glass.dart';
 
 class StatsView extends ConsumerStatefulWidget {
   const StatsView({super.key});
