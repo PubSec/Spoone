@@ -123,7 +123,8 @@ class StatsViewState extends ConsumerState<StatsView> {
                           padding: EdgeInsets.all(15),
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.purple.shade50)),
+                              border: Border.all(color: Colors.purple.shade50),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             children: [
                               SelectableText.rich(
