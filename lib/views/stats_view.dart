@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spoone/model/link_stats/link_stats_model.dart';
 import 'package:spoone/providers/link_stats_result_provider.dart';
+import 'package:spoone/widgets/frost_glass.dart';
 
 class StatsView extends ConsumerStatefulWidget {
   const StatsView({super.key});
@@ -70,7 +70,8 @@ class StatsViewState extends ConsumerState<StatsView> {
                 ),
                 obscureText: true,
               ),
-              TextButton(
+              SizedBox(height: 20),
+              FilledButton(
                 onPressed: () {
                   if (_aliasTextEditingController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -98,7 +99,8 @@ class StatsViewState extends ConsumerState<StatsView> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                      return Text(
+                          'An error occured. Check your internet connection or try again later.');
                     } else if (snapshot.hasData) {
                       if (snapshot.data!.UrlError != null) {
                         return Text("Url doesn't exist.");
@@ -119,98 +121,97 @@ class StatsViewState extends ConsumerState<StatsView> {
                         dynamic unique_os_name = snapshot.data!.unique_os_name;
                         dynamic unique_country = snapshot.data!.unique_country;
                         dynamic unique_browser = snapshot.data!.unique_browser;
-
-                        return ClipRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-                            child: Column(
-                              children: [
-                                SelectableText.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: "URL: "),
-                                      TextSpan(
-                                        text: "$url\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Password: "),
-                                      TextSpan(
-                                        text: "$password\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Expired: "),
-                                      TextSpan(
-                                        text: "$expired\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Bots: "),
-                                      TextSpan(
-                                        text: "$bots\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Average Daily Clicks: "),
-                                      TextSpan(
-                                        text: "$average_daily_clicks\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Average Weekly Clicks: "),
-                                      TextSpan(
-                                        text: "$average_weekly_clicks\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(
-                                          text: "Average Monthly Clicks: "),
-                                      TextSpan(
-                                        text: "$average_monthly_clicks\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Day Click: "),
-                                      TextSpan(
-                                        text: "$unique_counter\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Unique Country: "),
-                                      TextSpan(
-                                        text: "$unique_country\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Unique OS Name: "),
-                                      TextSpan(
-                                        text: "$unique_os_name\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Unique Browser: "),
-                                      TextSpan(
-                                        text: "$unique_browser\n",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                        return Container(
+                          padding: EdgeInsets.all(15),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.purple.shade50)),
+                          child: Column(
+                            children: [
+                              SelectableText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(text: "URL: "),
+                                    TextSpan(
+                                      text: "$url\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Password: "),
+                                    TextSpan(
+                                      text: "$password\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Expired: "),
+                                    TextSpan(
+                                      text: "$expired\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Bots: "),
+                                    TextSpan(
+                                      text: "$bots\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Average Daily Clicks: "),
+                                    TextSpan(
+                                      text: "$average_daily_clicks\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Average Weekly Clicks: "),
+                                    TextSpan(
+                                      text: "$average_weekly_clicks\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Average Monthly Clicks: "),
+                                    TextSpan(
+                                      text: "$average_monthly_clicks\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Day Click: "),
+                                    TextSpan(
+                                      text: "$unique_counter\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Unique Country: "),
+                                    TextSpan(
+                                      text: "$unique_country\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Unique OS Name: "),
+                                    TextSpan(
+                                      text: "$unique_os_name\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(text: "Unique Browser: "),
+                                    TextSpan(
+                                      text: "$unique_browser\n",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                         );
                       }
