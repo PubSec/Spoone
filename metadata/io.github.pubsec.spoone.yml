@@ -1,0 +1,35 @@
+Categories:
+  - Internet
+  - Connectivity
+License: GPL-3.0
+AuthorName: PubSec
+AuthorEmail: pubsecs@proton.me
+AuthorWebSite: https://github.com/PubSec/Spoone
+SourceCode: https://github.com/PubSec
+IssueTracker: https://github.com/PubSec/Spoone/issues
+Changelog: https://github.com/PubSec/Spoone/releases
+
+AutoName: Spoone
+
+RepoType: git
+Repo: https://github.com/PubSec/Spoone.git
+Binaries: https://github.com/PubSec/Spoone/releases/download/1.0.0/spoonev1.0.0-release.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1.0.0
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+
+
+AllowedAPKSigningKeys: edb87926531ffdff7bd6655233d71d9afcf1be8ca444d2da23a2f3c6166130fd
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1.0.0
